@@ -1,0 +1,32 @@
+<dx-data-grid
+  id="roles"
+  [dataSource]="dataSource"
+  [showBorders]="true"
+  (onRowPrepared)="rowPrepare($event)"
+  [columnHidingEnabled]="true"
+>
+  <dxo-editing
+    mode="row"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+  >
+  </dxo-editing>
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="true"
+    [grouping]="true"
+  ></dxo-remote-operations>
+  <dxi-column dataField="veid" [caption]="'veId'"></dxi-column>
+  <dxi-column dataField="apiKey" caption="apiKey"></dxi-column>
+  <dxi-column dataField="ip_addresses" caption="ip地址"></dxi-column>
+
+  <dxi-column dataField="vm_type" caption="机器类型"></dxi-column>
+  <dxi-column dataField="suspended" caption="是否挂起"></dxi-column>
+  <dxi-column dataField="os" caption="操作系统"></dxi-column>
+  <dxi-column
+    dataField="createTime"
+    dataType="date"
+    caption="加入时间"
+  ></dxi-column>
+</dx-data-grid>

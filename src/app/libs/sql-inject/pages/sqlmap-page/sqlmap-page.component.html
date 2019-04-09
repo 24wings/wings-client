@@ -1,0 +1,86 @@
+<dx-button dx-button text="如何使用" (onClick)="tipVisible = true"></dx-button>
+
+<dx-button
+  [type]="'danger'"
+  text="删除任务"
+  (onClick)="deleteSelectionTasks()"
+></dx-button>
+<dx-data-grid
+  [dataSource]="dataSource"
+  [showBorders]="true"
+  (onRowPrepared)="onTaskPrepare($event)"
+  [columnHidingEnabled]="true"
+>
+  <dxi-column type="buttons" [width]="170">
+    <dxi-button name="edit"></dxi-button>
+    <dxi-button name="delete"></dxi-button>
+    <dxi-button
+      hint="Clone"
+      icon="repeat"
+      [visible]="true"
+      [onClick]="copy"
+    ></dxi-button>
+    <dxi-button
+      hint="Clone"
+      icon="video"
+      [visible]="true"
+      [onClick]="taskStart"
+    ></dxi-button>
+    <dxi-button
+      hint="Clone"
+      icon="doc"
+      [visible]="true"
+      [onClick]="viewLog"
+    ></dxi-button>
+  </dxi-column>
+  <dxo-selection
+    [selectAllMode]="'page'"
+    [showCheckBoxesMode]="'onClick'"
+    mode="multiple"
+  ></dxo-selection>
+  <dxo-pager
+    [showPageSizeSelector]="true"
+    [allowedPageSizes]="[8, 12, 20]"
+  ></dxo-pager>
+  <dxo-editing
+    mode="popup"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+  >
+  </dxo-editing>
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="true"
+    [grouping]="true"
+  ></dxo-remote-operations>
+  <dxi-column
+    dataField="taskId"
+    [caption]="'taskId'"
+    [allowEditing]="false"
+    [formItem]="{ disabled: true }"
+  ></dxi-column>
+  <dxi-column
+    dataField="status"
+    caption="状态"
+    [allowEditing]="false"
+    [formItem]="{ disabled: true }"
+  ></dxi-column>
+  <dxi-column dataField="url" caption="目标"></dxi-column>
+</dx-data-grid>
+
+<dx-popup
+  class="popup"
+  [width]="300"
+  [height]="250"
+  [showTitle]="true"
+  title="允许浏览器跨域"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [(visible)]="tipVisible"
+>
+  <div *dxTemplate="let data of 'content'">
+    open -a "Google Chrome" --args --disable-web-security
+    --user-data-dir=/usrs/yangjie/temp/chrome 以本地方式打开mac
+  </div>
+</dx-popup>

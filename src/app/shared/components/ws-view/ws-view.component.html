@@ -1,0 +1,47 @@
+<ws-editor
+  [view]="v"
+  [dataSource]="dataSource"
+  (onCreateSuccess)="onCreateSuccess()"
+></ws-editor>
+<dx-data-grid
+  [dataSource]="dataSource"
+  [showBorders]="true"
+  mode="multiple"
+  [selectedRowKeys]="selectedRowKeys"
+  (selectedRowKeysChange)="setSelectRowKeys($event)"
+>
+  <dxo-selection [selectAllMode]="'page'" mode="multiple"></dxo-selection>
+
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="true"
+    [grouping]="true"
+  ></dxo-remote-operations>
+  <dxi-column
+    *ngFor="let col of columns"
+    [caption]="col.caption"
+    [calculateDisplayValue]="col.calculateDisplayValue"
+    [dataField]="col.dataField"
+  ></dxi-column>
+  <dxi-column type="buttons" [width]="110">
+    <dxi-button icon="edit" [onClick]="edit"></dxi-button>
+
+    <dxi-button name="delete"></dxi-button>
+  </dxi-column>
+  <dxi-column type="buttons">
+    <dxi-button
+      hint="video"
+      icon="video"
+      [text]="'切换'"
+      [onClick]="doAction"
+      name="change"
+    ></dxi-button>
+  </dxi-column>
+  <dxo-editing
+    mode="row"
+    [allowDeleting]="true"
+    [useIcons]="true"
+  ></dxo-editing>
+</dx-data-grid>

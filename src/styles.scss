@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+// Your scss file
+@import "themes/generated/variables.base.scss";
+@import "~jsoneditor/dist/jsoneditor.min.css";
+textarea.jsoneditor-text {
+  min-height: 350px;
+}
+html,
+body {
+  margin: 0px;
+  min-height: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+.text-center {
+  text-align: center;
+}

@@ -1,0 +1,171 @@
+<dx-data-grid id="roles" [dataSource]="dataSource" [showBorders]="true">
+  <dxo-editing
+    mode="row"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+  >
+  </dxo-editing>
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="true"
+    [grouping]="true"
+  ></dxo-remote-operations>
+  <dxi-column dataField="title" caption="标题"></dxi-column>
+  <dxi-column
+    dataField="content"
+    caption="内容"
+    editCellTemplate="cellTemplate"
+  ></dxi-column>
+  <dxi-column
+    dataField="createTime"
+    dataType="date"
+    [caption]="'创建时间'"
+  ></dxi-column>
+  <dxi-column dataField="postCateId" caption="文章分类">
+    <dxo-lookup
+      [dataSource]="postCateLookupDataSource"
+      valueExpr="postCateId"
+      displayExpr="name"
+    >
+    </dxo-lookup>
+  </dxi-column>
+  <dxi-column
+    dataField="postTagIds"
+    caption="文章标签"
+    editCellTemplate="postTagIdsEditTemplate"
+  >
+  </dxi-column>
+  <div *dxTemplate="let data of 'postTagIdsEditTemplate'">
+    <dx-tag-box
+      [dataSource]="postTagLookupDataSource"
+      displayExpr="tagName"
+      valueExpr="postTagId"
+      (valueChange)="data.setValue(',' + $event.join(',') + ',')"
+    >
+    </dx-tag-box>
+  </div>
+  <dxi-column
+    dataField="isArchive"
+    dataType="boolean"
+    [caption]="'归档'"
+  ></dxi-column>
+  <dxi-column
+    dataField="isTop"
+    dataType="boolean"
+    [caption]="'置顶'"
+  ></dxi-column>
+  <dxo-editing mode="popup" [allowUpdating]="true">
+    <dxo-popup
+      title="编辑"
+      [showTitle]="true"
+      [width]="700"
+      [height]="600"
+      [position]="{ my: 'center', at: 'center', of: 'window' }"
+    >
+    </dxo-popup>
+  </dxo-editing>
+  <div *dxTemplate="let data of 'cellTemplate'">
+    <dx-button
+      [text]="'查看内容'"
+      (onClick)="
+        editorPopupVisible = true;
+        editingContent = data.value;
+        selectedRow = data
+      "
+    ></dx-button>
+    <dx-popup
+      class="popup"
+      [width]="'100%'"
+      [height]="'80%'"
+      [showTitle]="true"
+      title="文章内容"
+      [dragEnabled]="false"
+      [closeOnOutsideClick]="true"
+      [(visible)]="editorPopupVisible"
+      #editorPopup
+      [toolbarItems]="[
+        {
+          widget: 'dxButton',
+          options: { text: '提交', onClick: submit },
+          location: 'after',
+          toolbar: 'bottom'
+        },
+        {
+          widget: 'dxButton',
+          options: { text: '取消', onClick: reset },
+          location: 'after',
+          toolbar: 'bottom'
+        }
+      ]"
+    >
+      <div *dxTemplate="let item of 'content'">
+        <dx-html-editor
+          [(value)]="editingContent"
+          #editor
+          [(visible)]="editorPopupVisible"
+          [valueType]="'Markdown'"
+        >
+          <dxo-toolbar>
+            <dxi-item formatName="undo"></dxi-item>
+            <dxi-item formatName="redo"></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item
+              formatName="size"
+              [formatValues]="[
+                '8pt',
+                '10pt',
+                '12pt',
+                '14pt',
+                '18pt',
+                '24pt',
+                '36pt'
+              ]"
+            ></dxi-item>
+            <dxi-item
+              formatName="font"
+              [formatValues]="[
+                'Arial',
+                'Courier New',
+                'Georgia',
+                'Impact',
+                'Lucida Console',
+                'Tahoma',
+                'Times New Roman',
+                'Verdana'
+              ]"
+            ></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item formatName="bold"></dxi-item>
+            <dxi-item formatName="italic"></dxi-item>
+            <dxi-item formatName="strike"></dxi-item>
+            <dxi-item formatName="underline"></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item formatName="alignLeft"></dxi-item>
+            <dxi-item formatName="alignCenter"></dxi-item>
+            <dxi-item formatName="alignRight"></dxi-item>
+            <dxi-item formatName="alignJustify"></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item
+              formatName="header"
+              [formatValues]="[false, 1, 2, 3, 4, 5]"
+            ></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item formatName="orderedList"></dxi-item>
+            <dxi-item formatName="bulletList"></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item formatName="color"></dxi-item>
+            <dxi-item formatName="background"></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item formatName="link"></dxi-item>
+            <dxi-item formatName="image"></dxi-item>
+            <dxi-item formatName="separator"></dxi-item>
+            <dxi-item formatName="clear"></dxi-item>
+            <dxi-item formatName="codeBlock"></dxi-item>
+            <dxi-item formatName="blockquote"></dxi-item>
+          </dxo-toolbar>
+        </dx-html-editor>
+      </div>
+    </dx-popup>
+  </div>
+</dx-data-grid>

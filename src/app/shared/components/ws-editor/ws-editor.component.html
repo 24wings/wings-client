@@ -1,0 +1,102 @@
+<!-- {{ v | json }} -->
+<!-- {{ selectedRows | json }} -->
+<div style="text-align: right;margin-bottom:20px">
+  <dx-button
+    text="新建"
+    (onClick)="openNewModal($event)"
+    [width]="40"
+    style="margin-right:20px"
+  ></dx-button>
+  <dx-button
+    text="编辑"
+    (onClick)="openUpdateModel($event)"
+    [width]="40"
+    style="margin-right:20px"
+    [disabled]="selectedRows.length != 1"
+  ></dx-button>
+  <dx-button
+    text="详情"
+    (onClick)="openNewModal($event)"
+    [width]="40"
+    style="margin-right:20px"
+  ></dx-button>
+  <dx-button
+    text="删除"
+    (onClick)="deleteSelected($event)"
+    [width]="40"
+    type="danger"
+    [stylingMode]="'outlined'"
+    style="margin-right:20px"
+  ></dx-button>
+</div>
+
+<dx-popup
+  class="popup"
+  [width]="'80vw'"
+  [height]="'80vh'"
+  [showTitle]="true"
+  title="编辑"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [(visible)]="editorVisible"
+>
+  <!-- <dxi-toolbar-item text="Title" location="before"> </dxi-toolbar-item> -->
+  <!-- <dxi-toolbar-item
+    widget="dxButton"
+    location="after"
+    [options]="{
+      text: 'Refresh',
+      onClick: refresh
+    }"
+  > -->
+  <!-- </dxi-toolbar-item> -->
+
+  <div *dxTemplate="let data of 'content'">
+    <!-- {{ formData | json }} -->
+    <form (submit)="onFormSubmit($event)">
+      <dx-form
+        id="form"
+        [formData]="formData"
+        [readOnly]="false"
+        [showColonAfterLabel]="true"
+        [showValidationSummary]="true"
+        validationGroup="customerData"
+        [minColWidth]="233"
+        colCount="2"
+      >
+        <dxi-item
+          [dataField]="item.dataField"
+          *ngFor="let item of items"
+          [label]="item.label"
+          [colCount]="1"
+          [template]="item.template"
+        >
+          <ng-container [ngSwitch]="item.editorType">
+            <ng-container *ngSwitchCase="'text'">
+              text
+            </ng-container>
+            <ng-container *ngSwitchCase="'json'">
+              <div *dxTemplate="let cell of 'jsonTemplate'">
+                <!-- <button (click)="log(cell)">日志</button> -->
+                <json-cell
+                  [(value)]="cell.component.option('formData')[cell.dataField]"
+                  [item]="item"
+                ></json-cell>
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchDefault></ng-container>
+          </ng-container>
+        </dxi-item>
+
+        <dxi-item [colSpan]="4"></dxi-item>
+        <dxi-item
+          [alignment]="'bottom'"
+          itemType="button"
+          horizontalAlignment="left"
+          [buttonOptions]="submitButtonOptions"
+        >
+        </dxi-item>
+      </dx-form>
+    </form>
+  </div>
+</dx-popup>

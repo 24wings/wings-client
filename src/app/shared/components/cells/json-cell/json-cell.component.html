@@ -1,0 +1,23 @@
+<dx-button text="详情" (onClick)="editorVisible = true"></dx-button>
+{{ value | json }}
+<dx-popup
+  class="popup"
+  [width]="'80vw'"
+  [height]="'80vh'"
+  [showTitle]="true"
+  title="编辑"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [(visible)]="editorVisible"
+>
+  <ng-container *ngIf="editorVisible">
+    <json-editor
+      class="col-md-12"
+      #editorExample
+      style="min-height: 800px;"
+      [options]="editorOptions"
+      (change)="sync($event)"
+      [(data)]="value"
+    ></json-editor>
+  </ng-container>
+</dx-popup>

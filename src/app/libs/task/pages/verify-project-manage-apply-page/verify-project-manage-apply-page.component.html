@@ -1,0 +1,20 @@
+<dx-data-grid [dataSource]="dataSource" [showBorders]="true">
+    <dxo-editing mode="popup" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
+    </dxo-editing>
+    <dxi-column type="buttons" [width]="170">
+        <dxi-button name="edit"></dxi-button>
+        <dxi-button name="delete"></dxi-button>
+        <dxi-button hint="Clone" icon="video" [visible]="true" [onClick]="pass"></dxi-button>
+        <dxi-button hint="Clone" icon="repeat" [visible]="true" [onClick]="reject"></dxi-button>
+        <dxi-button hint="Clone" icon="doc" [visible]="true" [onClick]="viewLog"></dxi-button>
+    </dxi-column>
+    <dxo-selection mode="single"></dxo-selection>
+    <dxo-remote-operations [filtering]="true" [sorting]="true" [grouping]="true"></dxo-remote-operations>
+    <dxi-column dataField="userid" [caption]="'用户Id'"></dxi-column>
+    <dxi-column dataField="phone" [caption]="'手机号'"></dxi-column>
+    <dxi-column dataField="summary" [caption]="'简介'"></dxi-column>
+    <dxi-column dataField="status" [caption]="'状态'">
+        <dxo-lookup [dataSource]="StateOptions" [valueExpr]="'value'" displayExpr="label">
+        </dxo-lookup>
+    </dxi-column>
+</dx-data-grid>

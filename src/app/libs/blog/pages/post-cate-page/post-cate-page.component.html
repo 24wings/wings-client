@@ -1,0 +1,26 @@
+<dx-data-grid id="roles" [dataSource]="dataSource" [showBorders]="true">
+  <dxo-editing
+    mode="row"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+  >
+  </dxo-editing>
+  <dxo-remote-operations
+    [filtering]="true"
+    [sorting]="true"
+    [grouping]="true"
+  ></dxo-remote-operations>
+  <dxi-column dataField="name" caption="分类名"></dxi-column>
+
+  <dxo-editing mode="popup" [allowUpdating]="true">
+    <dxo-popup
+      title="编辑"
+      [showTitle]="true"
+      [width]="700"
+      [height]="600"
+      [position]="{ my: 'center', at: 'center', of: 'window' }"
+    >
+    </dxo-popup>
+  </dxo-editing>
+</dx-data-grid>
