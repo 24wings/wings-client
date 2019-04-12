@@ -2,50 +2,22 @@ import { mock } from "mockjs";
 import { Component, ViewChild, HostListener } from "@angular/core";
 import { JsonEditorOptions, JsonEditorComponent } from "ang-jsoneditor";
 import { View } from "src/app/shared/dto/View";
+import { views } from 'src/app/struct/views';
+
+
+
 @Component({
   selector: "design-page",
   templateUrl: "./design-page.component.html",
   styleUrls: ["./design-page.component.css"]
 })
 export class DesignPageComponent {
-  popupVisible: boolean = false;
+  views = views;
+  // popupVisible: boolean = false;
   public editorOptions: JsonEditorOptions;
   public data: any;
   @ViewChild(JsonEditorComponent) editor: JsonEditorComponent;
-  designView = {
-    key: "id",
-    dvo: "ViewManage",
-    title: "",
-    viewType: "table",
-    cols: [
-      { caption: "视图名称", dataType: "string", dataField: "name" },
-      { caption: "数据视图模型", dataType: "string", dataField: "dvo" },
-      {
-        caption: "元数据",
-        dataType: "string",
-        dataField: "meta",
-        calculateDisplayValue: data => (data ? JSON.stringify(data) : "")
-      }
-    ] as any,
-    items: [
-      {
-        label: { text: "视图名称" },
-        dataField: "name",
-        editorType: "dxTextBox"
-      },
-      {
-        label: { text: "数据视图模型" },
-        dataField: "dvo",
-        editorType: "dxTextBox"
-      },
-      {
-        label: { text: "元数据" },
-        dataField: "meta",
-        editorType: "json" as any,
-        template: "jsonTemplate"
-      }
-    ]
-  };
+  designView: View = null;
 
   constructor() {
     this.editorOptions = new JsonEditorOptions();
@@ -57,10 +29,14 @@ export class DesignPageComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+    this.changeView(this.views[1]);
   }
 
   list() {
-    this.popupVisible = true;
+  }
+
+  changeView($event) {
+    this.designView = $event;
   }
 
   ngAfterViewInit(): void {
