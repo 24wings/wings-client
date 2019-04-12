@@ -39,15 +39,12 @@ export class WsViewComponent {
   ngOnInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.dataSource = new DataSource(
-      this.v.dataSource);
-
+    this.dataSource = new DataSource(this.v.dataSource);
   }
   onCreateSuccess() {
-    if (this.v.viewType == 'table')
-      this.dataGrid.instance.refresh();
+    if (this.v.viewType == "table") this.dataGrid.instance.refresh();
     if (this.treeList) {
-      this.treeList.instance.refresh()
+      this.treeList.instance.refresh();
     }
   }
 
@@ -66,29 +63,29 @@ export class WsViewComponent {
     });
   };
 
-
-
   selectedAction;
   selectAction() {
     this.selectedAction = "eas";
     alert(1);
   }
 
-  edit = $event => {
+  edit = async $event => {
     if (this.dataGrid) {
       this.dataGrid.instance.deselectAll();
 
       this.dataGrid.instance.selectRows([$event.row.key], true);
-
+      var items = await this.dataGrid.instance.getSelectedRowsData();
+      console.log($event, items);
+      this.editor.setSelectedRows(items);
     }
     if (this.treeList) {
       this.treeList.instance.deselectAll();
       this.treeList.instance.selectRows([$event.row.key], true);
-
+      var items2 = await this.treeList.instance.getSelectedRowsData();
+      this.editor.setSelectedRows(items2);
     }
 
     this.editor.openUpdateModel($event.row.key);
-
   };
 
   add = $event => {
@@ -101,6 +98,5 @@ export class WsViewComponent {
       this.treeList.instance.selectRows([$event.row.key], true);
     }
     this.editor.openNewModal($event.row.key);
-
-  }
+  };
 }

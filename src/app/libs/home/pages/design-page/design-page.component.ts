@@ -2,9 +2,7 @@ import { mock } from "mockjs";
 import { Component, ViewChild, HostListener } from "@angular/core";
 import { JsonEditorOptions, JsonEditorComponent } from "ang-jsoneditor";
 import { View } from "src/app/shared/dto/View";
-import { views } from 'src/app/struct/views';
-
-
+import { views } from "src/app/struct/views";
 
 @Component({
   selector: "design-page",
@@ -32,8 +30,7 @@ export class DesignPageComponent {
     this.changeView(this.views[1]);
   }
 
-  list() {
-  }
+  list() {}
 
   changeView($event) {
     this.designView = $event;

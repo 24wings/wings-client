@@ -20,7 +20,9 @@ import {
   DxButtonGroupModule,
   DxFormModule,
   DxRadioGroupComponent,
-  DxRadioGroupModule
+  DxRadioGroupModule,
+  DxTreeViewModule,
+  DxDropDownBoxModule
 } from "devextreme-angular";
 import { CommonModule } from "@angular/common";
 import { HostService } from "./services/host.service";
@@ -65,7 +67,9 @@ import { DynamicCellComponent } from "./components/cells/dynamic-cell.component"
     FormsModule,
     DxFormModule,
     NgJsonEditorModule,
-    DxRadioGroupModule
+    DxRadioGroupModule,
+    DxTreeViewModule,
+    DxDropDownBoxModule
   ],
   exports: [
     DxTagBoxModule,
@@ -97,7 +101,9 @@ import { DynamicCellComponent } from "./components/cells/dynamic-cell.component"
     JsonCellComponent,
     DynamicColComponent,
     DynamicCellComponent,
-    DxRadioGroupModule
+    DxRadioGroupModule,
+    DxTreeViewModule,
+    DxDropDownBoxModule
   ],
   declarations: [
     WsViewComponent,
@@ -105,8 +111,7 @@ import { DynamicCellComponent } from "./components/cells/dynamic-cell.component"
     StringColComponent,
     JsonCellComponent,
     DynamicColComponent,
-    DynamicCellComponent,
-
+    DynamicCellComponent
   ],
   providers: [HostService, SqlMapService, DbService, DxTemplateHost]
 })

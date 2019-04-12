@@ -1,87 +1,131 @@
 import { View, TreeListView } from "src/app/shared/dto/View";
-import { DxiDataGridColumn } from 'devextreme-angular/ui/nested/base/data-grid-column-dxi';
-import DevExpress from 'devextreme/bundles/dx.all';
+import { DxiDataGridColumn } from "devextreme-angular/ui/nested/base/data-grid-column-dxi";
+import DevExpress from "devextreme/bundles/dx.all";
 import LocalStore from "devextreme/data/local_store";
-import { EditorType } from './editor-type';
+import { EditorType } from "./editor-type";
 import DataSource from "devextreme/data/data_source";
 type EditorOptions = DevExpress.ui.dxTextBoxOptions;
 
 export let userView: View = {
-    title: "用户管理界面",
+  title: "用户管理界面",
 
-    dataSource: {
-        store: new LocalStore({
-            key: "id",
-            immediate: true,
-            name: "local-user",
-            flushInterval: 1000
-        })
-    },
-    viewType: 'table',
-    cols: [
-        { dataField: "name", caption: "姓名", dataType: "string", } as DxiDataGridColumn,
-        { dataField: "username", caption: "用户名", dataType: "string", } as DxiDataGridColumn,
-        { dataField: "password", caption: "密码", dataType: "string", } as DxiDataGridColumn,
-        { dataField: "name", caption: "姓名", dataType: "string", } as DxiDataGridColumn,
-        {
-            caption: "所在组织", calculateCellValue: function (user) { return user.org ? user.org.orgName : '' },
-        } as any,
+  dataSource: {
+    store: new LocalStore({
+      key: "id",
+      immediate: true,
+      name: "local-user",
+      flushInterval: 1000
+    })
+  },
+  viewType: "table",
+  cols: [
+    {
+      dataField: "name",
+      caption: "姓名",
+      dataType: "string"
+    } as DxiDataGridColumn,
+    {
+      dataField: "username",
+      caption: "用户名",
+      dataType: "string"
+    } as DxiDataGridColumn,
+    {
+      dataField: "password",
+      caption: "密码",
+      dataType: "string"
+    } as DxiDataGridColumn,
+    {
+      dataField: "name",
+      caption: "姓名",
+      dataType: "string"
+    } as DxiDataGridColumn,
+    {
+      caption: "所在组织",
+      calculateCellValue: function(user) {
+        return user.org ? user.org.orgName : "";
+      }
+    } as any
+  ],
+  items: [
+    {
+      dataField: "name",
+      label: { text: "姓名" },
+      dataType: "string"
+    } as DevExpress.ui.dxFormSimpleItem,
+    {
+      dataField: "username",
+      label: { text: "用户名" },
+      dataType: "string"
+    } as DevExpress.ui.dxFormSimpleItem,
+    {
+      dataField: "password",
+      label: { text: "密码" },
+      editorType: "dxTextBox",
+      editorOptions: { mode: "password" } as EditorOptions
+    } as DevExpress.ui.dxFormSimpleItem,
+    {
+      dataField: "org",
+      label: { text: "所在组织" },
 
-    ],
-    items: [
-        { dataField: "name", label: { text: "姓名" }, dataType: "string" } as DevExpress.ui.dxFormSimpleItem,
-        { dataField: "username", label: { text: "用户名" }, dataType: "string" } as DevExpress.ui.dxFormSimpleItem,
-        {
-            dataField: "password", label: { text: "密码" }, editorType: 'dxTextBox',
-            editorOptions: { mode: 'password' } as EditorOptions
-        } as DevExpress.ui.dxFormSimpleItem,
-        {
-            dataField: "org",
-            label: { text: "所在组织" },
-
-            editorType: 'dxDropDownBox',
-            editorOptions: {
-                dataSource: new DataSource(new LocalStore({
-                    key: "id",
-                    immediate: true,
-                    name: "local-org",
-                    flushInterval: 1000,
-                })),
-                valueExpr: "id",
-                displayExpr: "orgName",
-                placeholder: "Select a value...",
-
-            }
-
+      editorType: "dxDropDownBox",
+      editorOptions: {
+        dxTreeView: {
+          dataSource: new DataSource(
+            new LocalStore({
+              key: "id",
+              immediate: true,
+              name: "local-org",
+              flushInterval: 1000
+            })
+          ),
+          keyExpr: "id",
+          valueExpr: "id",
+          displayExpr: "orgName",
+          parentIdExpr: "parentId",
+          placeholder: "Select a value..."
         }
-
-    ]
-}
+      }
+    }
+  ]
+};
 
 export let orgView: TreeListView = {
-    parentIdExpr: "parentId",
-    keyExpr: "id",
-    title: "组织管理",
-    viewType: 'tree-list',
-    dataSource: {
-        store: new LocalStore({
-            key: "id",
-            immediate: true,
-            name: "local-org",
-            flushInterval: 1000,
-        }),
+  parentIdExpr: "parentId",
+  keyExpr: "id",
+  title: "组织管理",
+  viewType: "tree-list",
+  dataSource: {
+    store: new LocalStore({
+      key: "id",
+      immediate: true,
+      name: "local-org",
+      flushInterval: 1000
+    })
+  },
+  cols: [
+    {
+      dataField: "orgName",
+      caption: "组织名称",
+      dataType: "string"
+    } as DxiDataGridColumn,
+    {
+      dataField: "createTime",
+      caption: "创建时间",
+      dataType: "date"
+    } as DxiDataGridColumn
+  ],
+  items: [
+    {
+      dataField: "orgName",
+      label: { text: "组织名称" },
+      dataType: "string"
+    } as DevExpress.ui.dxFormSimpleItem,
 
-    },
-    cols: [
-        { dataField: "orgName", caption: "组织名称", dataType: "string" } as DxiDataGridColumn,
-        { dataField: "createTime", caption: "创建时间", dataType: "date" } as DxiDataGridColumn,
-
-
-    ],
-    items: [
-        { dataField: "orgName", label: { text: "组织名称" }, dataType: "string" } as DevExpress.ui.dxFormSimpleItem,
-
-        { dataField: "createTime", label: { text: "创建时间" }, dataType: 'date', editorType: 'dxDateBox' as EditorType } as DevExpress.ui.dxFormSimpleItem,
-
-    ],
-}
+    {
+      dataField: "createTime",
+      label: { text: "创建时间" },
+      dataType: "date",
+      editorType: "dxDateBox" as EditorType
+    } as DevExpress.ui.dxFormSimpleItem
+  ]
+};

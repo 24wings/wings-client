@@ -1,16 +1,35 @@
 <!-- {{ v | json }} -->
 <!-- {{ selectedRows | json }} -->
 <div style="text-align: right;margin-bottom:20px">
-  <dx-button text="新建" (onClick)="openNewModal($event)" [width]="40" style="margin-right:20px"></dx-button>
+  <dx-button
+    text="新建"
+    (onClick)="openNewModal()"
+    [width]="40"
+    style="margin-right:20px"
+  ></dx-button>
   <!-- <dx-button text="编辑" (onClick)="openUpdateModel($event)" [width]="40" style="margin-right:20px" -->
   <!-- [disabled]="selectedRows.length != 1"></dx-button> -->
   <!-- <dx-button text="详情" (onClick)="openNewModal($event)" [width]="40" style="margin-right:20px"></dx-button> -->
-  <dx-button text="删除" (onClick)="deleteSelected($event)" [width]="40" type="danger" [stylingMode]="'outlined'"
-    style="margin-right:20px"></dx-button>
+  <dx-button
+    text="删除"
+    (onClick)="deleteSelected($event)"
+    [width]="40"
+    type="danger"
+    [stylingMode]="'outlined'"
+    style="margin-right:20px"
+  ></dx-button>
 </div>
 
-<dx-popup class="popup" [width]="'80vw'" [height]="'80vh'" [showTitle]="true" title="编辑" [dragEnabled]="false"
-  [closeOnOutsideClick]="true" [(visible)]="editorVisible">
+<dx-popup
+  class="popup"
+  [width]="'80vw'"
+  [height]="'80vh'"
+  [showTitle]="true"
+  [title]="mode == 'create' ? '新建' : '编辑'"
+  [dragEnabled]="false"
+  [closeOnOutsideClick]="true"
+  [(visible)]="editorVisible"
+>
   <!-- <dxi-toolbar-item text="Title" location="before"> </dxi-toolbar-item> -->
   <!-- <dxi-toolbar-item
     widget="dxButton"
@@ -25,28 +44,68 @@
   <div *dxTemplate="let data of 'content'">
     <!-- {{ formData | json }} -->
     <form (submit)="onFormSubmit($event)">
-      <dx-form id="form" [formData]="formData" [readOnly]="false" [showColonAfterLabel]="true"
-        [showValidationSummary]="true" validationGroup="customerData" [minColWidth]="233" colCount="2">
-        <dxi-item [dataField]="item.dataField" [editorType]="item.editorType" *ngFor="let item of items"
-          [label]="item.label" [colCount]="1" [template]="item.template" [editorOptions]="item.editorOptions">
+      <dx-form
+        id="form"
+        [formData]="formData"
+        [readOnly]="false"
+        [showColonAfterLabel]="true"
+        [showValidationSummary]="true"
+        validationGroup="customerData"
+        [minColWidth]="233"
+        colCount="2"
+      >
+        <dxi-item
+          [dataField]="item.dataField"
+          [editorType]="item.editorType"
+          *ngFor="let item of items"
+          [label]="item.label"
+          [colCount]="1"
+          [template]="item.template"
+          [editorOptions]="item.editorOptions"
+        >
           <ng-container [ngSwitch]="item.editorType">
             <ng-container *ngSwitchCase="'text'">
               text
             </ng-container>
             <ng-container *ngSwitchCase="'json'">
               <div *dxTemplate="let cell of 'jsonTemplate'">
-
-                <json-cell [(value)]="cell.component.option('formData')[cell.dataField]" [item]="item"></json-cell>
+                <json-cell
+                  [(value)]="cell.component.option('formData')[cell.dataField]"
+                  [item]="item"
+                ></json-cell>
               </div>
-
             </ng-container>
             <ng-container *ngSwitchCase="'dxDropDownBox'">
-
               <div *dxTemplate="let cell of 'dxDropDownBoxTemplate'">
-                <ws-view [view]="getItemTreeView(item)"> </ws-view>
-
+                {{ item.editorOptions.dxTreeView.keyExpr }}
+                {{ item.editorOptions.dxTreeView.parentIdExpr }}
+                {{ item.editorOptions.dxTreeView.displayExpr }}
+                <dx-drop-down-box
+                  [(value)]="formData[cell.dataField]"
+                  displayExpr="orgName"
+                  placeholder="选择所在组织"
+                  [showClearButton]="true"
+                  [dataSource]="item.editorOptions.dxTreeView.dataSource"
+                  (onValueChanged)="syncTreeViewSelection($event)"
+                >
+                  <dx-tree-view
+                    [dataSource]="item.editorOptions.dxTreeView.dataSource"
+                    dataStructure="plain"
+                    keyExpr="item.editorOptions.dxTreeView.keyExpr"
+                    parentIdExpr="item.editorOptions.dxTreeView.parentIdExpr"
+                    selectionMode="single"
+                    [displayExpr]="item.editorOptions.dxTreeView.displayExpr"
+                    [selectByClick]="true"
+                    (onContentReady)="
+                      $event.component.selectItem(formData['org'])
+                    "
+                    (onItemSelectionChanged)="
+                      treeView_itemSelectionChanged($event)
+                    "
+                  >
+                  </dx-tree-view>
+                </dx-drop-down-box>
               </div>
-
             </ng-container>
 
             <ng-container *ngSwitchDefault></ng-container>
@@ -54,8 +113,12 @@
         </dxi-item>
 
         <dxi-item [colSpan]="4"></dxi-item>
-        <dxi-item [alignment]="'bottom'" itemType="button" horizontalAlignment="left"
-          [buttonOptions]="submitButtonOptions">
+        <dxi-item
+          [alignment]="'bottom'"
+          itemType="button"
+          horizontalAlignment="left"
+          [buttonOptions]="submitButtonOptions"
+        >
         </dxi-item>
       </dx-form>
     </form>

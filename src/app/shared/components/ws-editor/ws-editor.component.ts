@@ -6,7 +6,11 @@ import {
   EventEmitter
 } from "@angular/core";
 import { View, TreeListView } from "../../dto/View";
-import { DxFormComponent } from "devextreme-angular";
+import {
+  DxFormComponent,
+  DxTreeViewComponent,
+  DxTagBoxModule
+} from "devextreme-angular";
 import DevExpress from "devextreme/bundles/dx.all";
 import { Cell } from "../../dto/Cell";
 import LocalStore from "devextreme/data/local_store";
@@ -19,12 +23,12 @@ export class WsEditorComponent {
   @ViewChild(DxFormComponent) dxForm: DxFormComponent;
   editorVisible = false;
   dataSource: DataSource;
-
-
-
+  treeBoxValue: string;
 
   formData = {};
   v: View;
+  @ViewChild(DxTreeViewComponent) treeView: DxTreeViewComponent;
+  @ViewChild(DxTagBoxModule)
   items: Cell[] = [];
   @Input() set view(v: View) {
     this.v = v;
@@ -42,9 +46,10 @@ export class WsEditorComponent {
   customer = {};
   async onFormSubmit() {
     console.log(this.dataSource);
+    var pid = await this.formData[(this.v as TreeListView).parentIdExpr];
     debugger;
     if (this.mode == "create") {
-      await this.dataSource.store().insert(this.formData)
+      await this.dataSource.store().insert(this.formData);
       this.dataSource.store().load();
       this.onCreateSuccess.emit();
       this.editorVisible = false;
@@ -55,10 +60,15 @@ export class WsEditorComponent {
   }
 
   openNewModal(parentId = null) {
-    var parentIdExpr = (this.v as TreeListView).parentIdExpr
-    if (parentId && this.v.viewType == 'tree-list' && parentIdExpr) {
-      this.formData[parentIdExpr] = parentId;
+    var parentIdExpr = (this.v as TreeListView).parentIdExpr;
+    if (this.v.viewType == "tree-list") {
+      if (parentId && parentIdExpr) {
+        this.formData[parentIdExpr] = parentId;
+      } else {
+        // this.formData[parentIdExpr] = 0;
+      }
     }
+
     this.editorVisible = true;
   }
   ngOnInit(): void {
@@ -90,13 +100,10 @@ export class WsEditorComponent {
     this.editorVisible = true;
   }
   update() {
-    var key = (this.dataSource.key());
+    var key = this.dataSource.key();
 
-    (this.dataSource.store().update(
-      this.formData[key],
-      this.formData
-    ));
-    (this.dataSource.store()).load();
+    this.dataSource.store().update(this.formData[key], this.formData);
+    this.dataSource.store().load();
     this.onCreateSuccess.emit();
     this.editorVisible = false;
     notify("数据提交成功", "success");
@@ -105,11 +112,45 @@ export class WsEditorComponent {
   getItemTreeView(item: Cell) {
     var v = new View();
     v.dataSource = item.editorOptions.dataSource;
-    v.viewType = 'tree-list';
+    v.viewType = "tree-list";
     v.items = [];
     v.cols = [];
 
     // v.title;
     return v;
+  }
+  treeView_itemSelectionChanged(e) {
+    // alert(1);
+    this.showTreeViewVisible = false;
+    const nodes = e.component.getNodes();
+    this.formData["org"] = e.itemData;
+    console.log(e, this.formData);
+    // this.treeBoxValue = this.getSelectedItemsKeys(nodes).join("");
+    return false;
+  }
+  showTreeViewVisible = true;
+  syncTreeViewSelection($event) {
+    this.showTreeViewVisible = false;
+    if (!this.treeView) return;
+
+    // if (!this.formData["org"]) {
+    // this.treeView.instance.unselectAll();
+    // } else {
+    this.treeView.instance.selectItem($event.itemData);
+    // }
+  }
+  getSelectedItemsKeys(items) {
+    var result = [],
+      that = this;
+
+    items.forEach(function(item) {
+      if (item.selected) {
+        result.push(item.key);
+      }
+      if (item.items.length) {
+        result = result.concat(that.getSelectedItemsKeys(item.items));
+      }
+    });
+    return result;
   }
 }
