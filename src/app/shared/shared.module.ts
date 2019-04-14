@@ -42,8 +42,15 @@ import { NgJsonEditorModule } from "ang-jsoneditor";
 import { JsonCellComponent } from "./components/cells/json-cell/json-cell.component";
 import { DynamicColComponent } from "./components/cols/dynamic-col.component";
 import { DynamicCellComponent } from "./components/cells/dynamic-cell.component";
+import { DynamicColDirective } from "./components/cols/dynamic-col.directive";
+import { DynamicCellDirective } from "./components/cells/dynamic-cell.directive";
+import { cellComponentRegister } from "./components/cells/cell.component.register";
+import { DynamicComponentModule } from "ng-dynamic";
+var cellComponents = cellComponentRegister.map(r => r.component);
+
 @NgModule({
   imports: [
+    DynamicComponentModule.forRoot({}),
     DxTagBoxModule,
     CommonModule,
     DxTextAreaModule,
@@ -103,7 +110,8 @@ import { DynamicCellComponent } from "./components/cells/dynamic-cell.component"
     DynamicCellComponent,
     DxRadioGroupModule,
     DxTreeViewModule,
-    DxDropDownBoxModule
+    DxDropDownBoxModule,
+    ...cellComponents
   ],
   declarations: [
     WsViewComponent,
@@ -111,9 +119,13 @@ import { DynamicCellComponent } from "./components/cells/dynamic-cell.component"
     StringColComponent,
     JsonCellComponent,
     DynamicColComponent,
-    DynamicCellComponent
+    DynamicCellComponent,
+    DynamicColDirective,
+    DynamicCellDirective,
+    ...cellComponents
   ],
-  providers: [HostService, SqlMapService, DbService, DxTemplateHost]
+  providers: [HostService, SqlMapService, DbService, DxTemplateHost],
+  entryComponents: [...cellComponents]
 })
 export class SharedModule {
   public static forRoot(): ModuleWithProviders {

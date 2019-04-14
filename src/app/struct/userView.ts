@@ -9,14 +9,14 @@ type EditorOptions = DevExpress.ui.dxTextBoxOptions;
 export let userView: View = {
   title: "用户管理界面",
 
-  dataSource: {
+  dataSource: new DataSource({
     store: new LocalStore({
       key: "id",
       immediate: true,
       name: "local-user",
       flushInterval: 1000
     })
-  },
+  }),
   viewType: "table",
   cols: [
     {
@@ -35,13 +35,9 @@ export let userView: View = {
       dataType: "string"
     } as DxiDataGridColumn,
     {
-      dataField: "name",
-      caption: "姓名",
-      dataType: "string"
-    } as DxiDataGridColumn,
-    {
+      dataField: "org",
       caption: "所在组织",
-      calculateCellValue: function(user) {
+      calculateDisplayValue: function(user) {
         return user.org ? user.org.orgName : "";
       }
     } as any
@@ -66,8 +62,7 @@ export let userView: View = {
     {
       dataField: "org",
       label: { text: "所在组织" },
-
-      editorType: "dxDropDownBox",
+      editorType: "wsRefTree" as any,
       editorOptions: {
         dxTreeView: {
           dataSource: new DataSource(
@@ -78,6 +73,7 @@ export let userView: View = {
               flushInterval: 1000
             })
           ),
+          selectionMode: "single",
           keyExpr: "id",
           valueExpr: "id",
           displayExpr: "orgName",
@@ -94,14 +90,14 @@ export let orgView: TreeListView = {
   keyExpr: "id",
   title: "组织管理",
   viewType: "tree-list",
-  dataSource: {
+  dataSource: new DataSource({
     store: new LocalStore({
       key: "id",
       immediate: true,
       name: "local-org",
       flushInterval: 1000
     })
-  },
+  }),
   cols: [
     {
       dataField: "orgName",
@@ -126,6 +122,33 @@ export let orgView: TreeListView = {
       label: { text: "创建时间" },
       dataType: "date",
       editorType: "dxDateBox" as EditorType
+    } as DevExpress.ui.dxFormSimpleItem
+  ],
+  querys: [
+    {
+      dataField: "menus",
+      label: { text: "角色菜单" },
+      editorType: "wsRefTree" as any,
+      editorOptions: {
+        dxDropbox: {
+          displayExpr: "name"
+        },
+        dxTreeView: {
+          dataSource: new DataSource(
+            new LocalStore({
+              key: "id",
+              immediate: true,
+              name: "local-menu",
+              flushInterval: 1000
+            })
+          ),
+          selectionMode: "single",
+          keyExpr: "id",
+          displayExpr: "name",
+          parentIdExpr: "parentId",
+          placeholder: "勾选菜单列表"
+        }
+      }
     } as DevExpress.ui.dxFormSimpleItem
   ]
 };

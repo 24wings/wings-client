@@ -2,7 +2,7 @@ import { mock } from "mockjs";
 import { Component, ViewChild, HostListener } from "@angular/core";
 import { JsonEditorOptions, JsonEditorComponent } from "ang-jsoneditor";
 import { View } from "src/app/shared/dto/View";
-import { views } from "src/app/struct/views";
+import { views, activeView } from "src/app/struct/views";
 
 @Component({
   selector: "design-page",
@@ -15,7 +15,7 @@ export class DesignPageComponent {
   public editorOptions: JsonEditorOptions;
   public data: any;
   @ViewChild(JsonEditorComponent) editor: JsonEditorComponent;
-  designView: View = null;
+  designView: View = activeView;
 
   constructor() {
     this.editorOptions = new JsonEditorOptions();
@@ -27,13 +27,15 @@ export class DesignPageComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.changeView(this.views[1]);
   }
 
   list() {}
 
   changeView($event) {
-    this.designView = $event;
+    this.designView = null;
+    setTimeout(() => {
+      this.designView = $event;
+    }, 500);
   }
 
   ngAfterViewInit(): void {

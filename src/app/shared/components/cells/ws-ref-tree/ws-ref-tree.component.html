@@ -1,0 +1,24 @@
+<ng-container *ngIf="item && formData">
+  <dx-drop-down-box
+    [(value)]="_formData_[item.dataField]"
+    [placeholder]="item.editorOptions.dxTreeView.placeholder"
+    [showClearButton]="true"
+    [displayExpr]="item.editorOptions.dxTreeView.displayExpr"
+    [dataSource]="item.editorOptions.dxTreeView.dataSource"
+    (onValueChanged)="syncTreeViewSelection($event)"
+  >
+    <dx-tree-view
+      [dataSource]="item.editorOptions.dxTreeView.dataSource"
+      dataStructure="plain"
+      [keyExpr]="item.editorOptions.dxTreeView.keyExpr"
+      showCheckBoxesMode="normal"
+      [parentIdExpr]="item.editorOptions.dxTreeView.parentIdExpr"
+      [selectionMode]="item.editorOptions.dxTreeView.selectionMode"
+      [displayExpr]="item.editorOptions.dxTreeView.displayExpr"
+      [selectByClick]="true"
+      (onContentReady)="$event.component.selectItem(_formData_[item.dataField])"
+      (onItemSelectionChanged)="treeView_itemSelectionChanged($event, item)"
+    >
+    </dx-tree-view>
+  </dx-drop-down-box>
+</ng-container>

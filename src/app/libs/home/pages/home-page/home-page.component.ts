@@ -1,5 +1,5 @@
 import { Injectable, Component, Input } from "@angular/core";
-import DataSource from "devextreme/data/data_source";
+
 import notify from "devextreme/ui/notify";
 import { HttpClient } from "@angular/common/http";
 

@@ -3,17 +3,26 @@
   <ws-view [view]="designView" *ngIf="popupVisible" (onAction)="doAction($event)"></ws-view>
 </dx-popup> -->
 
-
-
 <div class="form">
   <div class="dx-fieldset">
     <div class="dx-field">
       <div class="dx-field-label">选择元数据</div>
       <div class="dx-field-value">
-        <dx-radio-group [displayExpr]="'title'" [items]="views" layout="horizontal" (valueChange)="changeView($event)">
+        <dx-radio-group
+          [displayExpr]="'title'"
+          [items]="views"
+          layout="horizontal"
+          (valueChange)="changeView($event)"
+        >
         </dx-radio-group>
       </div>
     </div>
   </div>
 </div>
-<ws-view [view]="designView" *ngIf="designView" (onAction)="doAction($event)"></ws-view>
+<div style="width: 100%;text-align: center">
+  <ws-view
+    [view]="designView"
+    *ngIf="designView"
+    (onAction)="doAction($event)"
+  ></ws-view>
+</div>
