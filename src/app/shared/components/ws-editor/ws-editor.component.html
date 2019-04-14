@@ -42,14 +42,6 @@
           [editorOptions]="item.editorOptions"
           [isRequired]="item.isRequired"
         >
-          <ng-container *ngSwitchCase="'wsRefTree'">
-            <div *dxTemplate="let cell of 'dxDropDownBoxTemplate'">
-              <dynamic-cell
-                [(formData)]="formData"
-                [item]="item"
-              ></dynamic-cell>
-            </div>
-          </ng-container>
           <dxi-validation-rule
             *ngFor="let rule of item.validationRules"
             [type]="rule.type"
@@ -58,6 +50,14 @@
           </dxi-validation-rule>
 
           <ng-container [ngSwitch]="item.editorType">
+            <ng-container *ngSwitchCase="'wsRefTree'">
+              <div *dxTemplate="let cell of 'dxDropDownBoxTemplate'">
+                <dynamic-cell
+                  [(formData)]="formData"
+                  [item]="item"
+                ></dynamic-cell>
+              </div>
+            </ng-container>
             <ng-container *ngSwitchDefault></ng-container>
           </ng-container>
         </dxi-item>

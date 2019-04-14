@@ -9,7 +9,6 @@ import {
   DxTextBoxModule,
   DxSelectBoxModule,
   DxHtmlEditorModule,
-  DxTemplateDirective,
   DxTemplateHost,
   DxTemplateModule,
   DxTagBoxModule,
@@ -19,7 +18,6 @@ import {
   DxToolbarModule,
   DxButtonGroupModule,
   DxFormModule,
-  DxRadioGroupComponent,
   DxRadioGroupModule,
   DxTreeViewModule,
   DxDropDownBoxModule
@@ -33,10 +31,7 @@ import { WsViewComponent } from "./components/ws-view/ws-view.component";
 import { WsEditorComponent } from "./components/ws-editor/ws-editor.component";
 import { StringColComponent } from "./components/cols/string-col/string-col.component";
 import { DxiButtonModule } from "devextreme-angular/ui/nested/button-dxi";
-import {
-  DxiItemComponent,
-  DxiItemModule
-} from "devextreme-angular/ui/nested/item-dxi";
+import { DxiItemModule } from "devextreme-angular/ui/nested/item-dxi";
 import { FormsModule } from "@angular/forms";
 import { NgJsonEditorModule } from "ang-jsoneditor";
 import { JsonCellComponent } from "./components/cells/json-cell/json-cell.component";
@@ -46,13 +41,14 @@ import { DynamicColDirective } from "./components/cols/dynamic-col.directive";
 import { DynamicCellDirective } from "./components/cells/dynamic-cell.directive";
 import { cellComponentRegister } from "./components/cells/cell.component.register";
 import { DynamicComponentModule } from "ng-dynamic";
+import { WsSearchBarComponent } from "./components/ws-search-bar/ws-search-bar.component";
 var cellComponents = cellComponentRegister.map(r => r.component);
 
 @NgModule({
   imports: [
+    CommonModule,
     DynamicComponentModule.forRoot({}),
     DxTagBoxModule,
-    CommonModule,
     DxTextAreaModule,
     DxDataGridModule,
     DxTreeListModule,
@@ -111,7 +107,8 @@ var cellComponents = cellComponentRegister.map(r => r.component);
     DxRadioGroupModule,
     DxTreeViewModule,
     DxDropDownBoxModule,
-    ...cellComponents
+    ...cellComponents,
+    WsSearchBarComponent
   ],
   declarations: [
     WsViewComponent,
@@ -122,7 +119,8 @@ var cellComponents = cellComponentRegister.map(r => r.component);
     DynamicCellComponent,
     DynamicColDirective,
     DynamicCellDirective,
-    ...cellComponents
+    ...cellComponents,
+    WsSearchBarComponent
   ],
   providers: [HostService, SqlMapService, DbService, DxTemplateHost],
   entryComponents: [...cellComponents]
