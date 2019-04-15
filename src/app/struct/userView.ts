@@ -17,7 +17,7 @@ export let userView: View = {
       flushInterval: 1000
     })
   }),
-  viewType: "table",
+  viewType: "Table",
   cols: [
     {
       dataField: "name",
@@ -89,7 +89,7 @@ export let orgView: TreeListView = {
   parentIdExpr: "parentId",
   keyExpr: "id",
   title: "组织管理",
-  viewType: "tree-list",
+  viewType: "TreeList",
   dataSource: new DataSource({
     store: new LocalStore({
       key: "id",

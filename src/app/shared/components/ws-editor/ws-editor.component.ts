@@ -11,12 +11,12 @@ import {
   DxTreeViewComponent,
   DxTagBoxModule
 } from "devextreme-angular";
-import DevExpress from "devextreme/bundles/dx.all";
 import { Cell } from "../../dto/Cell";
 import LocalStore from "devextreme/data/local_store";
 import notify from "devextreme/ui/notify";
 
 import DataSource from "devextreme/data/data_source";
+import CustomStore from "devextreme/data/custom_store";
 
 @Component({
   selector: "ws-editor",
@@ -62,8 +62,15 @@ export class WsEditorComponent {
     if (this.mode == "Create") {
       var result = this.dxForm.instance.validate();
       if (result.isValid) {
-        await this.dataSource.store().insert(this.formData);
-        this.dataSource.store().load();
+        var isCustomStore = this.dataSource instanceof CustomStore;
+        debugger;
+        if (isCustomStore) {
+          ((this.dataSource as any) as CustomStore).insert(this.formData);
+          ((this.dataSource as any) as CustomStore).load();
+        } else {
+          await this.dataSource.store().insert(this.formData);
+          this.dataSource.store().load();
+        }
         notify("数据提交成功", "success");
       }
     } else {
@@ -77,7 +84,7 @@ export class WsEditorComponent {
     this.mode = "Create";
     this.formData = {};
     var parentIdExpr = (this.v as TreeListView).parentIdExpr;
-    if (this.v.viewType == "tree-list") {
+    if (this.v.viewType == "TreeList") {
       if (parentId && parentIdExpr) {
         this.formData[parentIdExpr] = parentId;
       } else {

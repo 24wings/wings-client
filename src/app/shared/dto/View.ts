@@ -5,7 +5,7 @@ import DataSource from "devextreme/data/data_source";
 export class View {
   /**视图名字 */
   dvo?: string;
-  viewType: "table" | "tree-list";
+  viewType: "Table" | "TreeList";
   title: string;
   cols: DxiDataGridColumn[] = [];
   dataSource?: DataSource;

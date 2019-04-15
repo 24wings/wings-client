@@ -18,7 +18,7 @@ export let roleView: View = {
       flushInterval: 1000
     })
   }),
-  viewType: "table",
+  viewType: "Table",
   cols: [
     {
       dataField: "roleName",

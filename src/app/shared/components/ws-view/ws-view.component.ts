@@ -19,6 +19,7 @@ import LocalStore from "devextreme/data/local_store";
 import DataSource from "devextreme/data/data_source";
 import { WsEditorComponent } from "../ws-editor/ws-editor.component";
 import { confirm } from "devextreme/ui/dialog";
+import CustomStore from "devextreme/data/custom_store";
 @Component({ selector: "ws-view", templateUrl: "./ws-view.component.html" })
 export class WsViewComponent {
   recursiveSelectionEnabled = true;
@@ -58,7 +59,7 @@ export class WsViewComponent {
     }
   }
   onCreateSuccess() {
-    if (this.v.viewType == "table") {
+    if (this.v.viewType == "Table") {
       this.dataGrid.instance.refresh();
     }
     if (this.treeList) {
@@ -127,8 +128,8 @@ export class WsViewComponent {
     var sure = await confirm("你确定要删除这些记录?", "提示");
     if (sure) {
       this.dataGrid.instance.getSelectedRowKeys().forEach(keu => {
-        var key = (this.dataSource as DevExpress.data.DataSource).key();
-        (this.dataSource as DevExpress.data.DataSource).store().remove(key);
+        var key = (this.dataSource as CustomStore).key();
+        (this.dataSource as CustomStore).remove(key);
       });
     }
   }
@@ -136,13 +137,13 @@ export class WsViewComponent {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    if (this.v.viewType == "table") this.dataGrid.instance.filter([]);
-    if (this.v.viewType == "tree-list") {
-      this.treeList.instance.filter([
-        "parentId",
-        "=",
-        "bd898b72-7589-b81c-d734-c691697e6b6a"
-      ]);
+    if (this.v.viewType == "Table") this.dataGrid.instance.filter([]);
+    if (this.v.viewType == "TreeList") {
+      // this.treeList.instance.filter([
+      //   "parentId",
+      //   "=",
+      //   "bd898b72-7589-b81c-d734-c691697e6b6a"
+      // ]);
     }
   }
 

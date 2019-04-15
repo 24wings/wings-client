@@ -1,0 +1,9 @@
+<a
+  *ngFor="let dvo of dvos"
+  routerLink="/home/page"
+  [queryParams]="{ dvo: dvo.fullName }"
+  (click)="selectView(dvo)"
+  >{{ dvo.title }}</a
+>
+
+<ws-view [view]="selectedDVO" *ngIf="selectedDVO"></ws-view>

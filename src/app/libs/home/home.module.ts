@@ -6,15 +6,22 @@ import { PersonalPageComponent } from "./pages/personal-page/personal-page.compo
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { DesignPageComponent } from "./pages/design-page/design-page.component";
+import { PageComponent } from "./pages/page/page.component";
 
 @NgModule({
-  declarations: [HomePageComponent, PersonalPageComponent, DesignPageComponent],
+  declarations: [
+    HomePageComponent,
+    PersonalPageComponent,
+    DesignPageComponent,
+    PageComponent
+  ],
   imports: [
     HttpClientModule,
     CommonModule,
     SharedModule.forRoot(),
     RouterModule.forChild([
       { path: "", component: HomePageComponent },
+      { path: "page", component: PageComponent },
       { path: "personal", component: PersonalPageComponent },
       { path: "design", component: DesignPageComponent }
     ])

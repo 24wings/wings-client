@@ -1,5 +1,5 @@
 <!-- <div *dynamicComponent="template; context: bindings"></div> -->
-
+{{ v.viewType }}
 <ws-editor
   [view]="v"
   (onCreateSuccess)="onCreateSuccess()"
@@ -28,7 +28,7 @@
 </div>
 <div [class.hide]="mode != 'List'">
   <dx-data-grid
-    *ngIf="v.viewType == 'table'"
+    *ngIf="v.viewType == 'Table'"
     [dataSource]="dataSource"
     [showBorders]="true"
     mode="multiple"
@@ -73,7 +73,7 @@
   </dx-data-grid>
 
   <dx-tree-list
-    *ngIf="v.viewType == 'tree-list'"
+    *ngIf="v.viewType == 'TreeList'"
     [dataSource]="dataSource"
     [keyExpr]="v.keyExpr"
     [parentIdExpr]="v.parentIdExpr"

@@ -43,6 +43,8 @@ import { cellComponentRegister } from "./components/cells/cell.component.registe
 import { DynamicComponentModule } from "ng-dynamic";
 import { WsSearchBarComponent } from "./components/ws-search-bar/ws-search-bar.component";
 var cellComponents = cellComponentRegister.map(r => r.component);
+import { DxValidatorModule } from "devextreme-angular/ui/validator";
+import { DxValidationGroupModule } from "devextreme-angular/ui/validation-group";
 
 @NgModule({
   imports: [
@@ -72,7 +74,9 @@ var cellComponents = cellComponentRegister.map(r => r.component);
     NgJsonEditorModule,
     DxRadioGroupModule,
     DxTreeViewModule,
-    DxDropDownBoxModule
+    DxDropDownBoxModule,
+    DxValidationGroupModule,
+    DxValidatorModule
   ],
   exports: [
     DxTagBoxModule,
@@ -108,7 +112,9 @@ var cellComponents = cellComponentRegister.map(r => r.component);
     DxTreeViewModule,
     DxDropDownBoxModule,
     ...cellComponents,
-    WsSearchBarComponent
+    WsSearchBarComponent,
+    DxValidationGroupModule,
+    DxValidatorModule
   ],
   declarations: [
     WsViewComponent,

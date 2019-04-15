@@ -10,7 +10,7 @@ import { menuView } from "./menuView";
 export let metaView: View = {
   dvo: "ViewManage",
   title: "元数据设计页面",
-  viewType: "table",
+  viewType: "Table",
   dataSource: new DataSource({
     store: new LocalStore({
       key: "id" as any,

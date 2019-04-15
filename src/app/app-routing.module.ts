@@ -14,6 +14,7 @@ import { SharedModule } from "./shared/shared.module";
 import { SingleCardModule } from "./layouts";
 
 const routes: Routes = [
+  { path: "hk", loadChildren: "./libs/hk/hk.module#HkModule" },
   { path: "home", loadChildren: "./libs/home/home.module#HomeModule" },
 
   { path: "admin/blog", loadChildren: "./libs/blog/blog.module#BlogModule" },
@@ -38,7 +39,7 @@ const routes: Routes = [
     component: ProfileComponent,
     canActivate: [AuthGuardService]
   },
-  { path: "", redirectTo: "/home/design", pathMatch: "full" },
+  { path: "", redirectTo: "hk/login", pathMatch: "full" },
   // {
   //   path: "home",
   //   component: HomeComponent,

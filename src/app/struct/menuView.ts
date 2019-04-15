@@ -18,8 +18,7 @@ export let menuView: TreeListView = {
       flushInterval: 1000
     })
   }),
-
-  viewType: "tree-list",
+  viewType: "TreeList",
   cols: [
     {
       dataField: "name",
